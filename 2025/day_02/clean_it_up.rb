@@ -42,7 +42,7 @@ class CleanItUp
       repetitions = id.length / pattern_length
       remainder = id.length % pattern_length
 
-      # If the pattern repeats exactly (no remainder) and at least twice
+      # Pattern repeats exactly (no remainder) and at least twice
       if remainder == 0 && repetitions >= 2
         if pattern * repetitions == id
           return true
@@ -52,6 +52,16 @@ class CleanItUp
 
     false
   end
+
+  def right_now
+    File.read(input)
+      .scan(/(\d+)-(\d+)/).lazy
+      .map { |s, e| s..e }
+      .flat_map(&:to_a)
+      .select(&/\A(?<seq>\d+)\k<seq>+\z/.method(:match?))
+      .sum(&:to_i)
+  end
 end
 
 puts CleanItUp.new("input.txt").invalid_ids_sum
+puts CleanItUp.new("input.txt").right_now
