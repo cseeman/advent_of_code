@@ -1,8 +1,6 @@
-require "pry"
 class PasswordSorter
-  attr_reader :input
-  def initialize(input)
-    @input = input
+  def initialize(lines)
+    @lines = lines
   end
 
   def find_new_index(rotation, start_index)
@@ -40,10 +38,7 @@ class PasswordSorter
     current_index = 50
     password = 0
 
-    File.readlines(input).each do |line|
-      rotation = line.strip
-      next if rotation.empty?
-
+    @lines.each do |rotation|
       password += count_zeros_during_rotation(rotation, current_index)
       current_index = find_new_index(rotation, current_index)
     end
@@ -52,4 +47,5 @@ class PasswordSorter
   end
 end
 
-puts PasswordSorter.new("input.txt").find_actual_password
+puts PasswordSorter.new(ARGF.readlines(chomp: true)).find_actual_password
+# ruby solution.rb input.txt

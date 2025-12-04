@@ -2,12 +2,8 @@ require "rspec"
 require_relative "solution"
 
 describe PasswordSorter do
-  let(:test_input) { "test_input.txt" }
-  let(:password_sorter) { PasswordSorter.new(test_input) }
-
-  it "should initialize with the input" do
-    expect(password_sorter.input).to eq(test_input)
-  end
+  let(:test_lines) { %w[L68 L30 R48 L5 R60 L55 L1 L99 R14 L82] }
+  let(:password_sorter) { PasswordSorter.new(test_lines) }
 
   it "should find the new index" do
     expect(password_sorter.find_new_index("L68", 50)).to eq(82)
