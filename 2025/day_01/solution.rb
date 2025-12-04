@@ -18,20 +18,18 @@ class PasswordSorter
   end
 
   def count_zeros_during_rotation(rotation, start_index)
-    rotation_direction = rotation[0]
-    rotation_amount = rotation[1..-1].to_i
-    count = 0
+    direction = rotation[0]
+    amount = rotation[1..].to_i
 
-    (1..rotation_amount).each do |i|
-      position = if rotation_direction == "R"
-        (start_index + i) % 100
-      else
-        (start_index - i) % 100
-      end
-      count += 1 if position == 0
+    if direction == "R"
+      (start_index + amount) / 100
+    elsif start_index == 0
+      amount / 100
+    elsif amount < start_index
+      0
+    else
+      1 + (amount - start_index) / 100
     end
-
-    count
   end
 
   def find_actual_password
