@@ -4,6 +4,31 @@ class Joltage
     @input = input
   end
 
+  def override(bank)
+    digits = bank.to_s.chars.map(&:to_i)
+    result = []
+    start_position = 0
+
+    12.times do |i|
+      remaining_needed = 12 - i - 1
+      end_position = digits.length - remaining_needed - 1
+
+      max_digit = -1
+      max_position = -1
+      (start_position..end_position).each do |pos|
+        if digits[pos] > max_digit
+          max_digit = digits[pos]
+          max_position = pos
+        end
+      end
+
+      result << max_digit
+      start_position = max_position + 1
+    end
+
+    result.join.to_i
+  end
+
   def max_pair(bank)
     digits = bank.to_s.chars.map(&:to_i)
     max_joltage = 0
@@ -23,7 +48,7 @@ class Joltage
       .map(&:strip)
       .reject(&:empty?)
       .map(&:to_i)
-      .map { |bank| max_pair(bank) }
+      .map { |bank| override(bank) }
       .sum
   end
 end
