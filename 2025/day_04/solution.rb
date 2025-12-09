@@ -1,5 +1,6 @@
 class PaperRollGrid
   ROLL = "@"
+  EMPTY = "."
   NEIGHBOR_OFFSETS = [
     [-1, -1], [-1, 0], [-1, 1],
     [0, -1],           [0, 1],
@@ -8,6 +9,14 @@ class PaperRollGrid
 
   def initialize(lines)
     @grid = lines.map(&:chars)
+  end
+
+  def total_removable_count
+    total = 0
+    while (removed = remove_accessible_rolls) > 0
+      total += removed
+    end
+    total
   end
 
   def accessible_roll_count
@@ -19,6 +28,19 @@ class PaperRollGrid
   end
 
   private
+
+  def remove_accessible_rolls
+    positions_to_remove = []
+    @grid.each_with_index do |row, row_index|
+      row.each_with_index do |cell, col_index|
+        if roll?(cell) && accessible?(row_index, col_index)
+          positions_to_remove << [row_index, col_index]
+        end
+      end
+    end
+    positions_to_remove.each { |row, col| @grid[row][col] = EMPTY }
+    positions_to_remove.size
+  end
 
   def roll?(cell)
     cell == ROLL
@@ -42,6 +64,8 @@ class PaperRollGrid
 end
 
 if __FILE__ == $0
-  puts PaperRollGrid.new(ARGF.readlines(chomp: true)).accessible_roll_count
+  lines = ARGF.readlines(chomp: true)
+  puts "Part 1: #{PaperRollGrid.new(lines).accessible_roll_count}"
+  puts "Part 2: #{PaperRollGrid.new(lines).total_removable_count}"
 end
 # ruby solution.rb input.txt

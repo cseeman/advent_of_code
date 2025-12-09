@@ -21,4 +21,8 @@ describe PaperRollGrid do
   it "counts accessible rolls correctly" do
     expect(grid.accessible_roll_count).to eq(13)
   end
+
+  it "counts total removable rolls correctly" do
+    expect(grid.total_removable_count).to eq(43)
+  end
 end
